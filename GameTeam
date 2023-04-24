@@ -1,0 +1,180 @@
+// COPYRIGHTS.© ABANOB AYOUB
+// Description: C++ using vectors
+
+/*
+vecList[index] returns the element at the position specified by the index
+vecList.front() return the first element
+vecList.back() return the last element
+vecList.clear() deletes all elements from the object
+vecList.push_back(elem) a copy of elem is inserted into vecList at the end
+vecList.pop_back() delete the last element of vecList
+vecList.empty() returns true if the object vecList is empty and false otherwise
+vecList.size() return the number of elements currently in the object vecList
+vecList.max_size return the max number of elements that can be inserted in the
+object
+*/
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+//Function Prototype
+void printPlayerInfo(vector<string> &namePar, vector<int> &numPar, vector<bool> &statusPar);
+void addPlayer(vector<string> &namePar, vector<int> &numPar, vector<bool> &statusPar);
+void changeStatus(vector<string> &namePar, vector<bool> &statusPar);
+void removePlayer(vector<string> &namePar, vector<int> &numPar, vector<bool> &statusPar);
+
+int main() {
+	//declarations
+	vector<int>playerNumbers;
+	vector<string>playerNames;
+	vector<bool>playerAbsent;
+	int actionRequest;
+	bool isActive = true;
+
+	//get user input
+	while (isActive == true) {
+		cout << "0 - Quit" << endl;
+		cout << "1 - Add a player to the team" << endl;
+		cout << "2 - Remove a player from the team" << endl;
+		cout << "3 - Change status of a player" << endl;
+		cout << "4 - Display team information" << endl;
+		cout << endl;
+		cin >> actionRequest;
+		if (actionRequest == 0) {
+			isActive = false;
+			cout << endl << "Thank You..Bye Bye...";
+		}
+		else if (actionRequest == 1) {
+			addPlayer(playerNames, playerNumbers, playerAbsent);
+		}
+		else if (actionRequest == 2) {
+			removePlayer(playerNames, playerNumbers, playerAbsent);
+		}
+		else if (actionRequest == 3) {
+			changeStatus(playerNames, playerAbsent);
+		}
+		else if (actionRequest == 4) {
+			printPlayerInfo(playerNames, playerNumbers, playerAbsent);
+		}
+		cout << endl << endl;
+	}
+
+	//calculation
+	//output
+	
+	//system("pause");
+	return 0;
+} //int main()
+
+void addPlayer(vector<string>& namePar, vector<int>& numPar, vector<bool>&statusPar) //actionRequest == 1
+{
+	string name; //player name
+	int num; //jersey number
+	char availableYesOrNo;
+	cout << "What is the player's name: ";
+	cin >> name;
+	cout << "What is " << name << "'s jersey number: ";
+	cin >> num;
+	cout << "Is " << name << " available to play (Y/N): ";
+	cin >> availableYesOrNo;
+	if (availableYesOrNo == 'y' || availableYesOrNo == 'Y') {
+		statusPar.push_back(true);
+	}
+	else {
+		statusPar.push_back(false);
+	}
+	namePar.push_back(name);
+	numPar.push_back(num);
+} //void addPlayer
+
+void removePlayer(vector<string>& namePar, vector<int>& numPar, vector<bool>& statusPar) //actionRequest == 2
+{
+	string playerName;
+	bool foundRecord = false;
+	int sizeOfVector; //how many kids are on the team
+	int cnt;
+	cout << "What is the player's name: ";
+	cin >> playerName;
+	sizeOfVector = namePar.size();
+	//determine the index based on the player's name
+	cnt = 0;
+	foundRecord = false;
+	while (cnt < sizeOfVector && !foundRecord) {
+		if (namePar[0] == playerName) {
+			//remove this record from all parallel vectors
+			namePar.erase(namePar.begin() + cnt);
+			numPar.erase(numPar.begin() + cnt);
+			statusPar.erase(statusPar.begin() + cnt);
+			foundRecord = true;
+			cout << "Record removed" << endl;
+		}
+		cnt += 1; //get ready to investigate the next element
+	}
+} //void removePlayer
+
+
+void changeStatus(vector<string>& namePar, vector<bool>& statusPar) //actionRequest == 3
+{
+	bool found = false;
+	string playerName;
+	char availableYesOrNo;
+	int sizeOfVector;
+	int cnt;
+
+	sizeOfVector = namePar.size(); //how many kids are on team
+	if (sizeOfVector == 0) { //Check whether there's Data stored on the vector or not..
+		cout << "No Data has Entered yet!";
+	}
+	else
+	{
+		cout << "What is the player's name: ";
+		cin >> playerName;
+		cnt = 0;
+		found = false;
+		while (cnt < sizeOfVector && !found) //Search the player's data based on his/her name
+		{
+			if (namePar[cnt] == playerName)
+				found = true;
+			else
+				cnt++;
+		}//while (cnt < sizeOfVector && !found)
+		
+		if (found == false)
+		{
+			cout << "Sorry No data have found about " << playerName << endl;
+		}
+		else
+		{
+			cout << "Is " << playerName << " available to play (Y/N): "; //After you find the player, Ask about his status
+			cin >> availableYesOrNo;
+			if (availableYesOrNo == 'y' || availableYesOrNo == 'Y') {
+				statusPar[cnt] = true;
+			}
+			else {
+				statusPar[cnt] = false;
+			}
+		}
+	} //else
+} //void changeStatus
+
+
+void printPlayerInfo(vector<string>& namePar, vector<int>& numPar, vector<bool>& statusPar) //actionRequest == 4
+{
+	int numOfPlayers;
+	numOfPlayers = namePar.size();
+	for (int i = 0; i < numOfPlayers; i++) {
+		cout << namePar[i] << "'s jersey number is " << numPar[i] << " and he/she is ";
+		if (statusPar[i] == true) {
+			cout << " playing today";
+		}
+		else {
+			cout << " not playing today";
+		}
+		cout << endl;
+	}
+}//void printPlayerInfo
+
+
+// COPYRIGHTS.© ABANOB AYOUB
+// COPYRIGHTS.© ABANOB AYOUB
